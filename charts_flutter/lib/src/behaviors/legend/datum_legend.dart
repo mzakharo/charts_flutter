@@ -13,7 +13,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'package:charts_common/common.dart' as common
+import 'package:charts_common/common.dart'
+    as common
     show
         BehaviorPosition,
         ChartBehavior,
@@ -25,8 +26,7 @@ import 'package:charts_common/common.dart' as common
         OutsideJustification,
         SelectionModelType,
         TextStyleSpec;
-import 'package:flutter/widgets.dart'
-    show BuildContext, EdgeInsets, Widget, hashValues;
+import 'package:flutter/widgets.dart' show BuildContext, EdgeInsets, Widget;
 import 'package:meta/meta.dart' show immutable;
 import '../../chart_container.dart' show ChartContainerRenderObject;
 import '../chart_behavior.dart'
@@ -149,28 +149,36 @@ class DatumLegend<D> extends ChartBehavior<D> {
 
     // Set the tabular layout settings to match the position if it is not
     // specified.
-    horizontalFirst ??= (position == common.BehaviorPosition.top ||
-        position == common.BehaviorPosition.bottom ||
-        position == common.BehaviorPosition.inside);
-    final layoutBuilder = horizontalFirst
-        ? new TabularLegendLayout.horizontalFirst(
-            desiredMaxColumns: desiredMaxColumns, cellPadding: cellPadding)
-        : new TabularLegendLayout.verticalFirst(
-            desiredMaxRows: desiredMaxRows, cellPadding: cellPadding);
+    horizontalFirst ??=
+        (position == common.BehaviorPosition.top ||
+            position == common.BehaviorPosition.bottom ||
+            position == common.BehaviorPosition.inside);
+    final layoutBuilder =
+        horizontalFirst
+            ? new TabularLegendLayout.horizontalFirst(
+              desiredMaxColumns: desiredMaxColumns,
+              cellPadding: cellPadding,
+            )
+            : new TabularLegendLayout.verticalFirst(
+              desiredMaxRows: desiredMaxRows,
+              cellPadding: cellPadding,
+            );
 
     return new DatumLegend._internal(
-        contentBuilder:
-            new TabularLegendContentBuilder(legendLayout: layoutBuilder),
-        selectionModelType: common.SelectionModelType.info,
-        position: position,
-        outsideJustification: outsideJustification,
-        insideJustification: insideJustification,
-        showMeasures: showMeasures ?? false,
-        legendDefaultMeasure:
-            legendDefaultMeasure ?? common.LegendDefaultMeasure.none,
-        measureFormatter: measureFormatter,
-        secondaryMeasureFormatter: secondaryMeasureFormatter,
-        entryTextStyle: entryTextStyle);
+      contentBuilder: new TabularLegendContentBuilder(
+        legendLayout: layoutBuilder,
+      ),
+      selectionModelType: common.SelectionModelType.info,
+      position: position,
+      outsideJustification: outsideJustification,
+      insideJustification: insideJustification,
+      showMeasures: showMeasures ?? false,
+      legendDefaultMeasure:
+          legendDefaultMeasure ?? common.LegendDefaultMeasure.none,
+      measureFormatter: measureFormatter,
+      secondaryMeasureFormatter: secondaryMeasureFormatter,
+      entryTextStyle: entryTextStyle,
+    );
   }
 
   /// Create a legend with custom layout.
@@ -275,17 +283,18 @@ class DatumLegend<D> extends ChartBehavior<D> {
 
   @override
   int get hashCode {
-    return hashValues(
-        selectionModelType,
-        contentBuilder,
-        position,
-        outsideJustification,
-        insideJustification,
-        showMeasures,
-        legendDefaultMeasure,
-        measureFormatter,
-        secondaryMeasureFormatter,
-        entryTextStyle);
+    return Object.hash(
+      selectionModelType,
+      contentBuilder,
+      position,
+      outsideJustification,
+      insideJustification,
+      showMeasures,
+      legendDefaultMeasure,
+      measureFormatter,
+      secondaryMeasureFormatter,
+      entryTextStyle,
+    );
   }
 }
 
@@ -295,12 +304,12 @@ class _FlutterDatumLegend<D> extends common.DatumLegend<D>
   DatumLegend config;
 
   _FlutterDatumLegend(this.config)
-      : super(
-          selectionModelType: config.selectionModelType,
-          measureFormatter: config.measureFormatter,
-          secondaryMeasureFormatter: config.secondaryMeasureFormatter,
-          legendDefaultMeasure: config.legendDefaultMeasure,
-        ) {
+    : super(
+        selectionModelType: config.selectionModelType,
+        measureFormatter: config.measureFormatter,
+        secondaryMeasureFormatter: config.secondaryMeasureFormatter,
+        legendDefaultMeasure: config.legendDefaultMeasure,
+      ) {
     super.entryTextStyle = config.entryTextStyle;
   }
 
@@ -322,17 +331,23 @@ class _FlutterDatumLegend<D> extends common.DatumLegend<D>
 
   @override
   Widget build(BuildContext context) {
-    final hasSelection =
-        legendState.legendEntries.any((entry) => entry.isSelected);
+    final hasSelection = legendState.legendEntries.any(
+      (entry) => entry.isSelected,
+    );
 
     // Show measures if [showMeasures] is true and there is a selection or if
     // showing measures when there is no selection.
-    final showMeasures = config.showMeasures &&
+    final showMeasures =
+        config.showMeasures &&
         (hasSelection ||
             legendDefaultMeasure != common.LegendDefaultMeasure.none);
 
-    return config.contentBuilder
-        .build(context, legendState, this, showMeasures: showMeasures);
+    return config.contentBuilder.build(
+      context,
+      legendState,
+      this,
+      showMeasures: showMeasures,
+    );
   }
 
   /// TODO: Maybe highlight the pie wedge.
